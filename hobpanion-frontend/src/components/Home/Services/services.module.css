@@ -1,0 +1,120 @@
+.container {
+  /* background-color: #f8faf7; */
+  padding: 8rem 8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  /* gap: 1.5rem; */
+}
+.header_section {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+}
+.cards {
+  display: flex;
+  gap: 24px;
+}
+.card_1,
+.card_2 {
+  width: 100%;
+  height: fit-content;
+}
+.card_1 {
+  background-color: #f8e8da;
+  padding: 4rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  text-align: center;
+}
+.card_2 {
+  background-color: #c7d8b7;
+  padding: 4rem 5rem;
+  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.card_title {
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--color-dark);
+}
+.subTitle {
+  font-size: 1.1rem;
+  line-height: 30px;
+  max-width: 30rem;
+  color: #344425;
+  max-width: 30rem;
+}
+.title {
+  font-size: 2.5rem;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  line-height: 50px;
+  color: var(--color-dark);
+}
+.card_button {
+  font-size: 1rem;
+  letter-spacing: 1px;
+  margin-top: 15px;
+  border: 1.5px solid var(--color-dark);
+  background-color: transparent;
+  width: fit-content;
+  border-radius: 40px;
+  padding: 16px;
+}
+.avatar_section {
+  display: flex;
+  gap: 4.5rem;
+  align-items: center;
+  margin-top: 15px;
+}
+.avatar_stack {
+  position: relative;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: -10px;
+  border: 2px solid var(--color-white);
+}
+
+.avatar:nth-child(1) {
+  z-index: 4;
+  top: 0;
+  left: 0;
+}
+
+.avatar:nth-child(2) {
+  z-index: 3;
+  top: 10px;
+  left: 10px;
+}
+
+.avatar:nth-child(3) {
+  z-index: 2;
+  top: 20px;
+  left: 20px;
+}
+
+.container span.overflow_indicator {
+  position: absolute;
+  background-color: var(--color-dark);
+  border: 2px solid var(--color-white);
+  color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  top: 0;
+  left: 115px;
+}
