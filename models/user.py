@@ -63,8 +63,8 @@ class Technologies(Enum):
 
 
 class User(BaseModel):
-    username: str
-    company: str
+    firstname: str
+    lastname: str
     password: str
     email: str
     role: Role
@@ -74,7 +74,7 @@ class User(BaseModel):
     facebookURL: Optional[str] = None
     twitterURL: Optional[str] = None
     youtubeURL: Optional[str] = None
-    
+
 
 class Login(BaseModel):
     email: str

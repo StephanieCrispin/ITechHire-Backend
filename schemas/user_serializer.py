@@ -3,8 +3,8 @@ def individual_serial(user) -> dict:
     # Initialize an empty dictionary to store the fields
     response_data = {
         "id": str(user["_id"]),
-        "username": str(user["username"]),
-        "company": str(user["company"]),
+        "firstname": str(user["firstname"]),
+        "lastname": str(user["lastname"]),
         "email": str(user["email"]),
         "role": str(user["role"]),
     }
