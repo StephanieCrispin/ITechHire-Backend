@@ -12,3 +12,4 @@ print("Connected to database successfully")
 # Below here we can now have multiple collections as such
 
 users_collection = db["Users"]
+plan_collection = db["Plans"]
