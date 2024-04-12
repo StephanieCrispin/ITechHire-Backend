@@ -13,6 +13,9 @@ def individual_serial(user) -> dict:
     if "specialization" in user:
         response_data["specialization"] = str(user["specialization"])
 
+    if "profile_photo" in user:
+        response_data["profile_photo"] = str(user["profile_photo"])
+
     if "about" in user:
         response_data["about"] = str(user["about"])
 

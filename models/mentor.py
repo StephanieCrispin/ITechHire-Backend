@@ -1,8 +1,9 @@
 from pydantic import BaseModel
-from typing import Optional,List
+from typing import Optional, List
 from enum import Enum
 
-class TechSpecialization(str,Enum):
+
+class TechSpecialization(str, Enum):
     ArtificialIntelligence = "artificialIntelligence"
     MachineLearning = "machineLearning"
     DataScience = "dataScience"
@@ -25,9 +26,7 @@ class TechSpecialization(str,Enum):
     QuantumComputing = "quantumComputing"
 
 
-
-
-class Technologies(str,Enum):
+class Technologies(str, Enum):
     Python = "python"
     JavaScript = "javaScript"
     Java = "java"
@@ -56,10 +55,12 @@ class Technologies(str,Enum):
     Git = "git"
     Jenkins = "jenkins"
 
+
 class UpdateMentor(BaseModel):
     specialization: Optional[TechSpecialization] = None
-    about:Optional[str] = None
-    technologies : Optional[List[Technologies]] = None
+    profile_photo: Optional[str] = None
+    about: Optional[str] = None
+    technologies: Optional[List[Technologies]] = None
     facebookURL: Optional[str] = None
     twitterURL: Optional[str] = None
     youtubeURL: Optional[str] = None

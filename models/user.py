@@ -68,6 +68,7 @@ class User(BaseModel):
     password: str
     email: str
     role: Role
+    profile_photo: Optional[str] = None
     specialization: Optional[TechSpecialization] = None
     about: Optional[str] = None
     technologies: Optional[List[Technologies]] = None
