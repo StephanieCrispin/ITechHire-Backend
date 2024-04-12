@@ -36,8 +36,8 @@ def update_mentor_profile(request: UpdateMentor, credentials: HTTPAuthorizationC
     print(payload["id"])
     mentor = users_collection.find_one({"_id": ObjectId(payload["id"])})
 
-    if mentor is None:
-        raise HTTPException(status_code=404, detail="Mentee not found")
+    # if mentor is None:
+    #     raise HTTPException(status_code=404, detail="Mentee not found")
 
     users_collection.update_one(
         {"_id": ObjectId(payload["id"])}, {"$set": request.dict()})
