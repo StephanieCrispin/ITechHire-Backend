@@ -12,7 +12,7 @@ router = APIRouter(prefix="/mentor")
 MONGO_ID_REGEX = r"^[a-f\d]{24}$"
 
 
-@router.get("/")
+@router.get("")
 def get_all_mentors(credentials: HTTPAuthorizationCredentials = Depends(security)):
     mentors = users_collection.find({"role": "mentor"})
     return {"status": "success", "message": "Mentors Found Successfully", "mentors": list_serial(mentors)}
@@ -29,11 +29,12 @@ def get_mentor(id: str = Path(description="Mentor id", pattern=MONGO_ID_REGEX), 
     return {"status": "success", "message": "Mentee found Successfully", "data": individual_serial(mentor)}
 
 
-@router.put("/update/")
+@router.put("/update")
 def update_mentor_profile(request: UpdateMentor, credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
     payload = verify_token(token)
     print(payload["id"])
+
     mentor = users_collection.find_one({"_id": ObjectId(payload["id"])})
 
     # if mentor is None:
