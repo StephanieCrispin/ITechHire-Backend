@@ -29,7 +29,7 @@ def get_mentor(id: str = Path(description="Mentor id", pattern=MONGO_ID_REGEX), 
     return {"status": "success", "message": "Mentee found Successfully", "data": individual_serial(mentor)}
 
 
-@router.put("update/{id}")
+@router.put("/update/")
 def update_mentor_profile(request: UpdateMentor, credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
     payload = verify_token(token)
