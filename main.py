@@ -1,16 +1,18 @@
+"""Service entry point"""
+
+from os import getenv
+
+from dotenv import load_dotenv
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes.auth_route import router as UserRouter
-from routes.mentor_route import router as MentorRouter
-from routes.plan_route import router as PlanRouter
-import uvicorn
+from mongoengine import connect
 
+from routes import api_router
+load_dotenv()
 app = FastAPI()
 
-app.include_router(UserRouter)
-app.include_router(MentorRouter)
-app.include_router(PlanRouter)
-
+connect(host=getenv("I_HIRE_MONGO_URL").replace('"', ''))
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -19,17 +21,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(api_router)
+
 
 @app.get("/")
-def index() -> dict[str, str]:
-    return {"data": "Hello World"}
+async def main():
+    """Entry point"""
+    return {"message": "Welcome to Kemdi Attire's AI service ⚡️"}
 
 
-if __name__ == "__main__":
-    uvicorn.run(
-        app,
-        host="0.0.0.0",
-        port=5000,
-        log_level="debug",
-        reload="True"
-    )
+@app.get("/ping")
+async def ping():
+    """Check service status"""
+    return {"status": True}
