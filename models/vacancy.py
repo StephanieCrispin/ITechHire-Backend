@@ -30,7 +30,6 @@ class Vacancy(Document, Base):
     title = StringField()
     mode = EnumField(WorkMode)
     jobType = EnumField(JobType)
-    commitment = StringField()
     company_id = StringField()
     details = StringField()
     time = DateTimeField()

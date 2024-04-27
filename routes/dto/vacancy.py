@@ -8,6 +8,5 @@ class VacancyRequest(BaseModel):
     link: str
     title: str
     jobType: JobType
-    commitment: str
     details: str
     mode: WorkMode

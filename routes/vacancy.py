@@ -31,7 +31,6 @@ async def create_vacancy(body: VacancyRequest, credentials:
         link=body.link,
         title=body.title,
         jobType=body.jobType,
-        commitment=body.commitment,
         company_id=company.to_dict()["_id"],
         details=body.details,
         mode=body.mode

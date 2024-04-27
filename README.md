@@ -1,3 +1,3 @@
-# 0HobPanioN Backend
+# ITechHire Backend
 
-This is the main codebase for hobpanion backend.
+This is the main codebase for ITechHire backend.
