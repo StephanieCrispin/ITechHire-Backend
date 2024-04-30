@@ -22,7 +22,7 @@ class EmployeeServices:
 
         try:
             employees = Employee.objects.filter(
-                company_id=company.to_dict()["_id"]).order_by('-created_at')
+                company_id=id).order_by('-created_at')
 
             return employees
         except Exception as e:
