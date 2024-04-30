@@ -57,7 +57,39 @@ def get_all_vacancies(credentials:
     print(payload["id"])
 
     try:
-        vacancies = VacancyServices.get_al_vacancies(payload["id"])
+        vacancies = VacancyServices.get_all_vacancies(payload["id"])
+    except Exception as e:
+        print(e)
+
+        raise HTTPException(
+            status_code=500, detail="Problem with getting all vacancies"
+        ) from e
+    return [vacancy.to_dict() for vacancy in vacancies]
+
+
+@router.get("/custom")
+def custom_vacancies(search: str | None = None, limit: int = 0, credentials:
+                     HTTPAuthorizationCredentials = Depends(security)):
+    """Searches for vacancy with title"""
+    print(f"from routes {search}")
+    try:
+        vacancies = VacancyServices.search_vacancies(search, limit)
+    except Exception as e:
+        print(e)
+
+        raise HTTPException(
+            status_code=500, detail="Problem with getting all vacancies"
+        ) from e
+    return [vacancy.to_dict() for vacancy in vacancies]
+
+
+@router.get("/total")
+def get_total_vacancies(credentials:
+                        HTTPAuthorizationCredentials = Depends(security)):
+    """Gets total vacancies"""
+
+    try:
+        vacancies = VacancyServices.get_total_vacancies()
     except Exception as e:
         print(e)
 

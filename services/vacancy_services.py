@@ -2,13 +2,14 @@ from models.vacancy import Vacancy
 from fastapi import HTTPException, status
 from bson import ObjectId
 from .company_services import CompanyServices
+# from bson.regex import Regex
 
 
 class VacancyServices:
 
     """Utitlity class for Vacancy Services"""
     @staticmethod
-    def get_al_vacancies(id: str):
+    def get_all_vacancies(id: str):
         """Gets all current vacancies a company has posted
 
         Args:
@@ -20,7 +21,24 @@ class VacancyServices:
 
         try:
             vacancies = Vacancy.objects.filter(
-                company_id=company.to_dict()["_id"])
+                company_id=company.to_dict()["_id"]).order_by('-created_at')
+
+            return vacancies
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=str(e))
+
+    @staticmethod
+    def get_total_vacancies():
+        """Gets all  vacancies 
+
+        Args:
+        id (Objectid): company id
+        """
+
+        try:
+            vacancies = Vacancy.objects().order_by('-created_at')
 
             return vacancies
         except Exception as e:
@@ -67,3 +85,23 @@ class VacancyServices:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Vacancy with id {id} not found"
             )
+
+    @staticmethod
+    def search_vacancies(search, skip=0):
+        """Searches for vacancies by title using case-insensitive regex."""
+
+        try:
+            print(search)
+            # Construct the regex pattern for case-insensitive search
+            # Match any string containing the query, .* is for matching
+            # Construct the regex pattern for case-insensitive search
+            regex_pattern = f'.*{str(search)}.*'
+
+            # Perform case-insensitive regex search on the title field
+            vacancies = Vacancy.objects(title__iregex=regex_pattern).order_by(
+                '-created_at').skip(skip)
+            return vacancies
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=str(e))

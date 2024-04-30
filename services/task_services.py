@@ -30,7 +30,7 @@ class TaskServices:
         """
 
         try:
-            tasks = Task.objects.filter(company_id=id)
+            tasks = Task.objects.filter(company_id=id).order_by('-created_at')
             return tasks
         except Exception as e:
             raise e
@@ -56,14 +56,3 @@ class TaskServices:
 
         # If the vacancy exists, delete it from the database
         task.delete()
-
-    # @staticmethod
-    # def get_completed_tasks(id: str):
-    #     try:
-
-    #         completed_tasks = Task.objects.filter(company_id=ObjectId(id))
-    #         return completed_tasks
-    #     except Exception as e:
-    #         raise HTTPException(
-    #             status_code=status.HTTP_400_BAD_REQUEST,
-    #             detail=str(e))
