@@ -10,3 +10,7 @@ class VacancyRequest(BaseModel):
     jobType: JobType
     details: str
     mode: WorkMode
+
+
+class UpdateSaved(BaseModel):
+    saved: bool

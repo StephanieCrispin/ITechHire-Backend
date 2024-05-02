@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from models.vacancy import Vacancy
-from routes.dto.vacancy import (VacancyRequest)
+from routes.dto.vacancy import (VacancyRequest, UpdateSaved)
 from services.company_services import CompanyServices
 from services.vacancy_services import VacancyServices
 from utils.jwt_service import verify_token
@@ -106,6 +106,24 @@ def get_vacancy(id: str, credentials:
 
     try:
         vacancy = VacancyServices.get_vacancy(id)
+    except Exception as e:
+        print(e)
+
+        raise HTTPException(
+            status_code=500, detail="Problem with getting all vacancies"
+        ) from e
+    return vacancy.to_dict()
+
+
+@router.put("/save/${id}")
+def update_saved(id: str, body: UpdateSaved, credentials:
+                 HTTPAuthorizationCredentials = Depends(security)):
+    """Updates the saved status of a document"""
+
+    try:
+        vacancy = VacancyServices.get_vacancy(id)
+        vacancy.saved = body.saved
+        vacancy.save()
     except Exception as e:
         print(e)
 

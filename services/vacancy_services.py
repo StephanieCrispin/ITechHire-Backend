@@ -21,7 +21,7 @@ class VacancyServices:
 
         try:
             vacancies = Vacancy.objects.filter(
-                company_id=company.to_dict()["_id"]).order_by('-created_at')
+                company_id=id).order_by('-created_at')
 
             return vacancies
         except Exception as e:

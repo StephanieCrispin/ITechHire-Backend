@@ -16,7 +16,6 @@ async def create_employee(body: EmployeeRequest, credentials:
     """Creates a new employee docuement in database"""
     token = credentials.credentials
     payload = verify_token(token)
-    print(payload["id"])
 
     company = CompanyServices.get_company_by_id(payload["id"])
 

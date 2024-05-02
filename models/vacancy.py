@@ -1,4 +1,5 @@
 from mongoengine import DateTimeField, Document, StringField, EnumField
+from mongoengine import BooleanField
 from .base import Base
 import datetime
 from enum import Enum
@@ -33,6 +34,7 @@ class Vacancy(Document, Base):
     company_id = StringField()
     details = StringField()
     time = DateTimeField()
+    saved = BooleanField(default=False)
     created_at = DateTimeField()
     updated_at = DateTimeField()
 
