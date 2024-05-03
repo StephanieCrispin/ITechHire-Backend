@@ -38,7 +38,7 @@ class VacancyServices:
         """
 
         try:
-            vacancies = Vacancy.objects().order_by('-created_at')
+            vacancies = Vacancy.objects().order_by('-time')
 
             return vacancies
         except Exception as e:
@@ -98,8 +98,8 @@ class VacancyServices:
             regex_pattern = f'.*{str(search)}.*'
 
             # Perform case-insensitive regex search on the title field
-            vacancies = Vacancy.objects(title__iregex=regex_pattern).order_by(
-                '-created_at').skip(skip)
+            vacancies = Vacancy.objects(title__iregex=regex_pattern).skip(
+                skip).order_by('-time')
             return vacancies
         except Exception as e:
             raise HTTPException(
