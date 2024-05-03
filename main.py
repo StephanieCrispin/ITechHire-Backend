@@ -1,5 +1,9 @@
 """Service entry point"""
 
+
+import asyncio
+import aiohttp
+
 from os import getenv
 
 from dotenv import load_dotenv
@@ -24,10 +28,23 @@ app.add_middleware(
 app.include_router(api_router)
 
 
+async def ping_self():
+    while True:
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://itechhire-backend.onrender.com"):
+                print("Ping successful")
+        await asyncio.sleep(200)  # Sleep for 5 minutes (300 seconds)
+
+
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(ping_self())
+
+
 @app.get("/")
 async def main():
     """Entry point"""
-    return {"message": "Welcome to Kemdi Attire's AI service ⚡️"}
+    return {"message": "Welcome to ITechHire Backend Service ⚡️"}
 
 
 @app.get("/ping")
