@@ -18,14 +18,12 @@ async def create_talent(body: TalentRequest):
     """Create a new document in the talent database"""
 
     body.password = Hash.hash_password(body.password)
-    print(body.password)
     talent = Talent(
         first_name=body.first_name,
         last_name=body.last_name,
         email=body.email,
         password=body.password
     )
-    print(talent.password)
     try:
         talent.save()
     except Exception as e:

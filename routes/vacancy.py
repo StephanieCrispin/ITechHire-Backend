@@ -1,9 +1,10 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from models.vacancy import Vacancy
-from routes.dto.vacancy import (VacancyRequest, UpdateSaved)
+from models.vacancy import Vacancy, SavedVacancy
+from routes.dto.vacancy import (VacancyRequest)
 from services.company_services import CompanyServices
 from services.vacancy_services import VacancyServices
+from services.talent_services import TalentServices
 from utils.jwt_service import verify_token
 
 router = APIRouter()
@@ -47,6 +48,27 @@ async def create_vacancy(body: VacancyRequest, credentials:
     return vacancy.to_dict()
 
 
+@router.post("/save/${id}")
+def update_saved(id: str, credentials:
+                 HTTPAuthorizationCredentials = Depends(security)):
+    """Saves a vacancy to a talent"""
+    token = credentials.credentials
+    payload = verify_token(token)
+
+    talent = TalentServices.get_talent_by_id(payload["id"])
+    vacancy = VacancyServices.get_vacancy(id)
+    saved_vacancy = SavedVacancy.objects(talent=talent).first()
+
+    if saved_vacancy:
+        saved_vacancy.vacancies.append(vacancy)
+    else:
+        saved_vacancy = SavedVacancy(talent=talent, vacancies=[vacancy])
+
+    saved_vacancy.save()
+
+    return {"message": "Vacancy saved successfully"}
+
+
 @router.get("")
 def get_all_vacancies(credentials:
                       HTTPAuthorizationCredentials = Depends(security)):
@@ -54,7 +76,6 @@ def get_all_vacancies(credentials:
 
     token = credentials.credentials
     payload = verify_token(token)
-    print(payload["id"])
 
     try:
         vacancies = VacancyServices.get_all_vacancies(payload["id"])
@@ -115,22 +136,23 @@ def get_vacancy(id: str, credentials:
     return vacancy.to_dict()
 
 
-@router.put("/save/${id}")
-def update_saved(id: str, body: UpdateSaved, credentials:
-                 HTTPAuthorizationCredentials = Depends(security)):
-    """Updates the saved status of a document"""
+@router.get("/talent/saved")
+async def get_saved_vacancies(credentials: HTTPAuthorizationCredentials =
+                              Depends(security)):
+    """Gets all saved vacancies belonging to a talent"""
 
-    try:
-        vacancy = VacancyServices.get_vacancy(id)
-        vacancy.saved = body.saved
-        vacancy.save()
-    except Exception as e:
-        print(e)
+    token = credentials.credentials
+    payload = verify_token(token)
 
-        raise HTTPException(
-            status_code=500, detail="Problem with getting all vacancies"
-        ) from e
-    return vacancy.to_dict()
+    talent = TalentServices.get_talent_by_id(payload["id"])
+
+    saved_vacancy = SavedVacancy.objects(talent=talent).first()
+
+    if saved_vacancy:
+        # return saved_vacancy.vacancies
+        return [vacancy.to_dict() for vacancy in saved_vacancy.vacancies]
+    else:
+        return []
 
 
 @router.delete("/delete/{id}")
@@ -148,3 +170,28 @@ def delete_all_vacancies(id: str, credentials:
         ) from e
 
     return {"status": "true", "message": "Vacancy deleted"}
+
+
+@router.delete("/saved/delete/{id}")
+def delete_saved(id: str, credentials:
+                 HTTPAuthorizationCredentials = Depends(security)):
+    """Deletes a saved vacancy from a talent's list"""
+    token = credentials.credentials
+    payload = verify_token(token)
+
+    talent = TalentServices.get_talent_by_id(payload["id"])
+    vacancy = VacancyServices.get_vacancy(id)
+    saved_vacancy = SavedVacancy.objects(talent=talent).first()
+
+    if saved_vacancy:
+        if vacancy in saved_vacancy.vacancies:
+            saved_vacancy.vacancies.remove(vacancy)
+            saved_vacancy.save()
+            return [vacancy.to_dict() for vacancy in saved_vacancy.vacancies]
+
+        else:
+            raise HTTPException(
+                status_code=404, detail="Vacancy not found in saved list")
+    else:
+        raise HTTPException(
+            status_code=404, detail="No saved vacancies found for the talent")

@@ -1,8 +1,9 @@
 from mongoengine import DateTimeField, Document, StringField, EnumField
-from mongoengine import BooleanField
+from mongoengine import ReferenceField, ListField
 from .base import Base
 import datetime
 from enum import Enum
+from .talent import Talent
 
 
 class JobType(Enum):
@@ -34,7 +35,6 @@ class Vacancy(Document, Base):
     company_id = StringField()
     details = StringField()
     time = DateTimeField()
-    saved = BooleanField(default=False)
     created_at = DateTimeField()
     updated_at = DateTimeField()
 
@@ -42,3 +42,8 @@ class Vacancy(Document, Base):
         if not self.time:
             self.time = datetime.datetime.now()
         return super().save(*args, **kwargs)
+
+
+class SavedVacancy(Document, Base):
+    talent = ReferenceField(Talent, required=True)
+    vacancies = ListField(ReferenceField(Vacancy))
