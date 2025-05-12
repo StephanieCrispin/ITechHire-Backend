@@ -4,6 +4,7 @@ from .company import router as company_router
 from .employee import router as employee_router
 from .vacancy import router as vacancy_router
 from .task import router as task_router
+from .auth_router import router as auth_router
 api_router = APIRouter()
 
 # NOTE: All routes prefix must be registered here
@@ -13,6 +14,7 @@ routes = [
     "/create"
     "/login",
     "/delete"
+    "/auth"
 ]
 
 api_router.include_router(
@@ -42,4 +44,9 @@ api_router.include_router(
     task_router,
     prefix="/task",
     tags=["Task Services"]
+)
+api_router.include_router(
+    auth_router,
+    prefix="/auth",
+    tags=["Auth Services"]
 )
