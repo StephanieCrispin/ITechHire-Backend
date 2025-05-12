@@ -19,3 +19,11 @@ run
 pipreqs
 
 ```
+
+or
+
+```bash
+
+pip list --format=freeze > requirements.txt
+
+```
