@@ -48,22 +48,22 @@ def verify_token(token: str) -> dict:
         )
 
 
-def verify_google_token(token_id, client_id):
-    """Verify Google OAuth token"""
-    from google.oauth2 import id_token
-    from google.auth.transport import requests
+# def verify_google_token(token_id, client_id):
+#     """Verify Google OAuth token"""
+#     from google.oauth2 import id_token
+#     from google.auth.transport import requests
 
-    google_request = requests.Request()
+#     google_request = requests.Request()
 
-    try:
-        payload = id_token.verify_oauth2_token(
-            token_id, google_request, client_id
-        )
+#     try:
+#         payload = id_token.verify_oauth2_token(
+#             token_id, google_request, client_id
+#         )
 
-        if payload["aud"] != client_id:
-            raise HTTPException(status_code=401, detail="Unauthorized")
+#         if payload["aud"] != client_id:
+#             raise HTTPException(status_code=401, detail="Unauthorized")
 
-        return payload
-    except Exception as e:
-        print(f"Google token verification error: {e}")
-        raise HTTPException(status_code=401, detail="Invalid Google token")
+#         return payload
+#     except Exception as e:
+#         print(f"Google token verification error: {e}")
+#         raise HTTPException(status_code=401, detail="Invalid Google token")

@@ -16,14 +16,24 @@ security = HTTPBearer()
 @router.post("/create", status_code=201)
 async def create_talent(body: TalentRequest):
     """Create a new document in the talent database"""
+    talent = TalentServices.get_talent_by_email(body.email)
+    if talent:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email already exists in the database"
+        )
 
     body.password = Hash.hash_password(body.password)
     talent = Talent(
         first_name=body.first_name,
         last_name=body.last_name,
         email=body.email,
-        password=body.password
+        password=body.password,
+        oauth_login=False
     )
+    access_token = create_access_token(
+        data={
+            "email": talent["email"]})
     try:
         talent.save()
     except Exception as e:
@@ -34,7 +44,10 @@ async def create_talent(body: TalentRequest):
             status_code=500, detail="Email already exists"
         ) from e
 
-    return talent.to_dict()
+    return {
+        "user": talent.to_dict(),
+        "access_token": access_token
+    }
 
 
 @router.post("/login")

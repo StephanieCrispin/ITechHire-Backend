@@ -1,4 +1,4 @@
-from mongoengine import DateTimeField, Document, StringField
+from mongoengine import DateTimeField, Document, StringField, BooleanField
 from .base import Base
 
 
@@ -12,3 +12,4 @@ class Company(Document, Base):
     password = StringField()
     created_at = DateTimeField()
     updated_at = DateTimeField()
+    oauth_login = BooleanField(default=False)
